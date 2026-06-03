@@ -5,6 +5,8 @@
 ![Status](https://img.shields.io/badge/Status-Completed-green)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-yellow)
 
+![Project Screenshot](project_screenshot.png)
+
 ## 📋 Project Overview
 
 This project documents a full forensic investigation conducted on a compromised Windows 10 workstation (`DESKTOP-HR7K2M1`) belonging to a mid-sized financial services company. The system was flagged by the SOC team after anomalous outbound traffic was detected at 02:14 AM on a Saturday.
