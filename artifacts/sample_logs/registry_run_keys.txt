@@ -1,0 +1,58 @@
+# Registry Run Keys — DESKTOP-HR7K2M1
+# Exported: 2026-05-16 09:30:00 UTC
+# Tool: RegRipper / reg export
+# Case: FIR-2026-0042
+
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run]
+"OneDrive"="C:\\Users\\jsmith\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe /background"
+"WindowsUpdate"="C:\\Users\\jsmith\\AppData\\Local\\Temp\\svchost32.exe"
+"Teams"="C:\\Users\\jsmith\\AppData\\Local\\Microsoft\\Teams\\Update.exe --processStart \"Teams.exe\" --process-start-args \"--system-initiated\""
+"Discord"="C:\\Users\\jsmith\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+"SecurityHealth"="C:\\Windows\\system32\\SecurityHealthSystray.exe"
+"WindowsDefender"="C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2105.5-0\\MSASCuiL.exe"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce]
+; (empty)
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce]
+; (empty)
+
+# === SCHEDULED TASKS ===
+
+Task: \WindowsUpdateCheck
+  Status:         Ready
+  Last Run Time:  2026-05-16 09:00:00
+  Next Run Time:  2026-05-16 10:00:00
+  Author:         DESKTOP-HR7K2M1\jsmith
+  Run As User:    DESKTOP-HR7K2M1\jsmith
+  Task To Run:    C:\Users\jsmith\AppData\Local\Temp\svchost32.exe
+  Trigger:        At 9:00 AM every day, every 1 hour
+  Comment:        Windows Update Checker
+
+Task: \Microsoft\Windows\UpdateOrchestrator\Schedule Scan
+  Status:         Ready
+  Last Run Time:  2026-05-16 08:00:00
+  Next Run Time:  2026-05-17 08:00:00
+  Task To Run:    %systemroot%\system32\usoclient.exe StartScan
+  Comment:        Legitimate Windows Update task
+
+Task: \Microsoft\Windows\Defender\Windows Defender Scheduled Scan
+  Status:         Ready
+  Last Run Time:  2026-05-15 03:00:00
+  Next Run Time:  2026-05-16 03:00:00
+  Task To Run:    C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2105.5-0\MpCmdRun.exe
+  Comment:        Legitimate Windows Defender task
+
+# === SERVICES (Auto-start) ===
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WindowsUpdateSvc]
+"DisplayName"="Windows Update Helper Service"
+"ImagePath"="C:\\Users\\jsmith\\AppData\\Local\\Temp\\svchost32.exe -k netsvcs"
+"Start"=dword:00000002
+"Type"=dword:00000010
+"Description"="Assists Windows Update operations"
+; NOTE: SUSPICIOUS — legitimate services do not run from AppData\Local\Temp

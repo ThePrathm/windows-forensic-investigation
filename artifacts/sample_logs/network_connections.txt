@@ -1,0 +1,42 @@
+# Network Connections — DESKTOP-HR7K2M1
+# Captured: 2026-05-16 09:20:00 UTC
+# Tool: netstat -anob
+# Case: FIR-2026-0042
+
+Active Connections
+
+Proto  Local Address          Foreign Address        State           Process
+TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       svchost.exe
+TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       System
+TCP    0.0.0.0:3389           0.0.0.0:0              LISTENING       svchost.exe
+TCP    192.168.1.105:49152    185.220.101.47:443     ESTABLISHED     svchost32.exe
+TCP    192.168.1.105:49153    185.220.101.47:443     ESTABLISHED     svchost32.exe
+TCP    192.168.1.105:49160    185.220.101.47:443     ESTABLISHED     svchost32.exe
+TCP    192.168.1.105:49200    192.168.1.50:445       ESTABLISHED     svchost32.exe
+TCP    192.168.1.105:50012    40.113.200.201:443     ESTABLISHED     chrome.exe
+TCP    192.168.1.105:50099    13.107.42.14:443       ESTABLISHED     teams.exe
+TCP    192.168.1.105:50101    52.96.221.146:443      ESTABLISHED     outlook.exe
+TCP    192.168.1.105:51200    192.168.1.10:88        TIME_WAIT       System
+UDP    0.0.0.0:5355           *:*                                    svchost.exe
+UDP    192.168.1.105:137      *:*                                    System
+
+# === HISTORICAL CONNECTIONS (from PCAP analysis) ===
+# Date Range: 2026-05-10 to 2026-05-16
+
+# C2 Beaconing Pattern (svchost32.exe → 185.220.101.47:443)
+# Total connections: 8,736 over 6 days
+# Average interval: ~60 seconds
+# Data transferred: 4.2 GB (outbound) / 120 MB (inbound)
+# Protocol: TLS 1.3 — certificate: CN=update-service.ddns.net
+
+TCP    192.168.1.105:49000    185.220.101.47:443     BEACON          svchost32.exe [2026-05-10 09:02:11]
+TCP    192.168.1.105:49001    185.220.101.47:443     BEACON          svchost32.exe [2026-05-10 09:03:15]
+TCP    192.168.1.105:49002    185.220.101.47:443     BEACON          svchost32.exe [2026-05-10 09:04:22]
+
+# Lateral Movement Attempts
+TCP    192.168.1.105:45000    192.168.1.50:445       ESTABLISHED     svchost32.exe [2026-05-10 11:20:33]
+TCP    192.168.1.105:45001    192.168.1.75:445       REFUSED         svchost32.exe [2026-05-10 11:21:04]
+TCP    192.168.1.105:45002    192.168.1.10:445       REFUSED         svchost32.exe [2026-05-10 11:21:55]
+
+# Initial C2 Callback (payload download)
+TCP    192.168.1.105:44500    185.220.101.47:443     CLOSED          powershell.exe [2026-05-10 08:47:05]
